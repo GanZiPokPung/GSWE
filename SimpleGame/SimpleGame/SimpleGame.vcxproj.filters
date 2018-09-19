@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="99.Defaluts">
+      <UniqueIdentifier>{5fd5d4c1-748e-4c2d-aa16-bf6caf327639}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Defaluts\Shaders">
+      <UniqueIdentifier>{aa86e47f-445f-4440-9a76-173363b46c4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Defaluts\Renderer">
+      <UniqueIdentifier>{1f997557-4405-4283-9b8d-a298666ca4f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Defaluts\Client">
+      <UniqueIdentifier>{9e0bf462-cd5f-492a-9f69-dd55c507aa5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.Managers">
+      <UniqueIdentifier>{3b87aae1-a800-435b-a80a-88973d67b9c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.Object">
+      <UniqueIdentifier>{8eb2e568-734c-4b0d-91aa-c4fa086b82ee}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Renderer.h">
+      <Filter>99.Defaluts\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>99.Defaluts\Client</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>99.Defaluts\Client</Filter>
+    </ClInclude>
+    <ClInclude Include="Struct.h" />
+    <ClInclude Include="Macro.h" />
+    <ClInclude Include="SceneMgr.h">
+      <Filter>98.Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectClass.h">
+      <Filter>00.Object</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>99.Defaluts\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleGame.cpp">
+      <Filter>99.Defaluts\Client</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>99.Defaluts\Client</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneMgr.cpp">
+      <Filter>98.Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectClass.cpp">
+      <Filter>00.Object</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\SolidRect.fs">
+      <Filter>99.Defaluts\Shaders</Filter>
+    </None>
+    <None Include="Shaders\SolidRect.vs">
+      <Filter>99.Defaluts\Shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>
