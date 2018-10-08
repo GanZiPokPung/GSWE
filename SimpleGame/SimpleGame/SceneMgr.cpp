@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "SceneMgr.h"
 
-#include "Renderer.h"
+//헤더에서 포함시켰음
+//#include "Renderer.h"
 #include "ObjectClass.h"
 
 INIT_SINGLETON(CSceneMgr)
@@ -12,10 +13,14 @@ CSceneMgr::CSceneMgr()
 	:m_pPlayer(nullptr)
 	, m_pRenderer(nullptr)
 {
+	
 }
 
 CSceneMgr::~CSceneMgr()
 {
+	m_pRenderer->DeleteTexture(m_texIssac);
+	delete m_pRenderer;
+	m_pRenderer = nullptr;
 }
 
 void CSceneMgr::Initialize()
@@ -30,11 +35,16 @@ void CSceneMgr::Initialize()
 	//init object
 	m_pPlayer = new CObjectClass();
 	m_pPlayer->SetPos(0.f, 0.f);
-	m_pPlayer->SetVel(1.f, 0.f);
-	m_pPlayer->SetSize(1.f, 1.f);
+	m_pPlayer->SetVel(0.f, 0.f);
+	m_pPlayer->SetAcc(0.f, 0.f);
+	m_pPlayer->SetForceX(0.f);
+	m_pPlayer->SetForceY(0.f);
+	m_pPlayer->SetMass(2.5f);
+	m_pPlayer->SetFrictionCoef(0.1f);
+	m_pPlayer->SetSize(1.5f, 1.5f);
 	m_pPlayer->SetColor(1.f, 1.f, 1.f, 1.f);
 
-	
+	m_texIssac = m_pRenderer->CreatePngTexture("../Resources/sonic.png");
 }
 
 void CSceneMgr::RenderScene()
@@ -67,13 +77,14 @@ void CSceneMgr::RenderScene()
 	newW = width * 100.f;
 	newH = height * 100.f;
 
-	m_pRenderer->DrawSolidRect(newX, newY, 0.f, newW, newH, r, g, b, a);
+	//m_pRenderer->DrawSolidRect(newX, newY, 0.f, newW, newH, r, g, b, a);
+	m_pRenderer->DrawTextureRect(newX, newY, 0.f, newW, -newH, r, g, b, a, m_texIssac);
 }
 
-float temp = 0.f; //for Test
-void CSceneMgr::Update()
+//float temp = 0.f; //for Test
+void CSceneMgr::Update(const float& eTime)
 {
-	m_pPlayer->Update();
+	m_pPlayer->Update(eTime);
 
 	/*m_pPlayer->SetSize(temp, temp);
 	temp += 0.05f;
@@ -87,6 +98,11 @@ void CSceneMgr::Update()
 	//컴퓨터 마다 단위를 정해야 한다!
 	//보통은 sec로 많이 쓰니까 단위 통일
 	//1m/s -> 1m/s^2
+}
+
+void CSceneMgr::ApplyForce(float x, float y, float eTime)
+{
+	m_pPlayer->ApplyForce(x, y, eTime);
 }
 
 

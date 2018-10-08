@@ -21,3 +21,9 @@ ClassName();
 
 #define INIT_SINGLETON(ClassName)\
 ClassName* ClassName::m_Instance = nullptr;
+
+#define SCAST(Type, Value) static_cast<Type>(Value)
+#define DCAST(Type, Value) dynamic_cast<Type>(Value)
+
+#define MSG_BOX(hWnd,ErrorMessage) \
+MessageBox(hWnd, ErrorMessage, L"Error Message", MB_OK)

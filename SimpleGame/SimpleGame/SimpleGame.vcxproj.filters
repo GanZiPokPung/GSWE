@@ -19,33 +19,46 @@
     <Filter Include="00.Object">
       <UniqueIdentifier>{8eb2e568-734c-4b0d-91aa-c4fa086b82ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.Headers">
+      <UniqueIdentifier>{c0d154d2-16ea-4a94-a4b0-70d4070d4e08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Defaluts\LoadPng">
+      <UniqueIdentifier>{0dc3b9f4-8a37-4216-b49e-97ab01b66fda}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Renderer.h">
-      <Filter>99.Defaluts\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>99.Defaluts\Client</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>99.Defaluts\Client</Filter>
     </ClInclude>
-    <ClInclude Include="Struct.h" />
-    <ClInclude Include="Macro.h" />
     <ClInclude Include="SceneMgr.h">
       <Filter>98.Managers</Filter>
     </ClInclude>
     <ClInclude Include="ObjectClass.h">
       <Filter>00.Object</Filter>
     </ClInclude>
+    <ClInclude Include="Struct.h">
+      <Filter>97.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Macro.h">
+      <Filter>97.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>97.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>99.Defaluts\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadPng.h">
+      <Filter>99.Defaluts\LoadPng</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>99.Defaluts\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="SimpleGame.cpp">
       <Filter>99.Defaluts\Client</Filter>
     </ClCompile>
@@ -58,12 +71,24 @@
     <ClCompile Include="ObjectClass.cpp">
       <Filter>00.Object</Filter>
     </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>99.Defaluts\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadPng.cpp">
+      <Filter>99.Defaluts\LoadPng</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\SolidRect.fs">
       <Filter>99.Defaluts\Shaders</Filter>
     </None>
     <None Include="Shaders\SolidRect.vs">
+      <Filter>99.Defaluts\Shaders</Filter>
+    </None>
+    <None Include="Shaders\TextureRect.fs">
+      <Filter>99.Defaluts\Shaders</Filter>
+    </None>
+    <None Include="Shaders\TextureRect.vs">
       <Filter>99.Defaluts\Shaders</Filter>
     </None>
   </ItemGroup>

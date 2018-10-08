@@ -21,16 +21,58 @@ but WITHOUT ANY WARRANTY.
 float g_posX = 0.f;
 float g_posY = 0.f;
 
-
-
 //CObjectClass* g_TestObj = nullptr;
+
+DWORD g_prevTime = 0;
+
+//global value for key check
+bool g_keyW = false;
+bool g_keyA = false;
+bool g_keyS = false;
+bool g_keyD = false;
+
 
 void RenderScene(void)
 {
+	//큰실수 방지
+	if (g_prevTime == 0)
+	{
+		g_prevTime = timeGetTime();
+	}
+	DWORD currTime = timeGetTime();
+	DWORD elapsedTime = currTime - g_prevTime;
+	g_prevTime = currTime;
+	float eTime = SCAST(float, (elapsedTime / 1000.f));
+
+
+
+	float fx = 0.f;
+	float fy = 0.f;
+	float amount = 10.f;
+
+	if (g_keyW)
+	{
+		fy += amount;
+	}
+	if (g_keyA)
+	{
+		fx -= amount;
+	}
+	if (g_keyS)
+	{
+		fy -= amount;
+	}
+	if (g_keyD)
+	{
+		fx += amount;
+	}
+
 	//SceneMgr
-	CSceneMgr::GetInstance()->Update();
+	CSceneMgr::GetInstance()->ApplyForce(fx, fy, eTime);
+	CSceneMgr::GetInstance()->Update(eTime);
 	CSceneMgr::GetInstance()->RenderScene();
 
+	//std::cout << "Elapsed Time : " << eTime << std::endl;
 
 	////다 지운다.
 	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -75,42 +117,105 @@ void MouseInput(int button, int state, int x, int y)
 	RenderScene();
 }
 
-void KeyInput(unsigned char key, int x, int y)
+
+void KeyDownInput(unsigned char key, int x, int y)
 {
 	if (key == 'w')
 	{
-		float x, y;
-		CSceneMgr::GetInstance()->GetpPlayer()->GetPosition(x, y);
-		y += 5.f;
-		CSceneMgr::GetInstance()->GetpPlayer()->SetPos(x, y);
-		//g_posY += 5.f;
+		g_keyW = true;
+		//CSceneMgr::GetInstance()->GetpPlayer()->SetForceY(5.f);
+		//std::cout << "W TRUE!!" << std::endl;
+
 	}
-	else if (key == 's')
+	if (key == 'a')
 	{
-		float x, y;
-		CSceneMgr::GetInstance()->GetpPlayer()->GetPosition(x, y);
-		y -= 5.f;
-		CSceneMgr::GetInstance()->GetpPlayer()->SetPos(x, y);
-		//g_posY -= 5.f;
+		g_keyA = true;
+		//CSceneMgr::GetInstance()->GetpPlayer()->SetForceX(-5.f);
+		//std::cout << "A TRUE!!" << std::endl;
+
 	}
-	else if (key == 'a')
+	if (key == 's')
 	{
-		float x, y;
-		CSceneMgr::GetInstance()->GetpPlayer()->GetPosition(x, y);
-		x -= 5.f;
-		CSceneMgr::GetInstance()->GetpPlayer()->SetPos(x, y);
-		//g_posX -= 5.f;
+		g_keyS = true;
+		//CSceneMgr::GetInstance()->GetpPlayer()->SetForceY(-5.f);
+		//std::cout << "S TRUE!!" << std::endl;
+
 	}
-	else if (key == 'd')
+	if (key == 'd')
 	{
-		float x, y;
-		CSceneMgr::GetInstance()->GetpPlayer()->GetPosition(x, y);
-		x += 5.f;
-		CSceneMgr::GetInstance()->GetpPlayer()->SetPos(x, y);
-		//g_posX += 5.f;
+		g_keyD = true;
+		//CSceneMgr::GetInstance()->GetpPlayer()->SetForceX(5.f);
+		//std::cout << "D TRUE!!" << std::endl;
+
+	}
+}
+
+void KeyUpInput(unsigned char key, int x, int y)
+{
+	if (key == 'w')
+	{
+		g_keyW = false;
+		CSceneMgr::GetInstance()->GetpPlayer()->SetForceY(-7.5f);
+		//std::cout << "W FALSE!!" << std::endl;
+	}
+	if (key == 'a')
+	{
+		g_keyA = false;
+		CSceneMgr::GetInstance()->GetpPlayer()->SetForceX(7.5f);
+		//std::cout << "A FALSE!!" << std::endl;
+	}
+	if (key == 's')
+	{
+		g_keyS = false;
+		CSceneMgr::GetInstance()->GetpPlayer()->SetForceY(7.5f);
+		//std::cout << "S FALSE!!" << std::endl;
+	}
+	if (key == 'd')
+	{
+		g_keyD = false;
+		CSceneMgr::GetInstance()->GetpPlayer()->SetForceX(-7.5f);
+		//std::cout << "D FALSE!!" << std::endl;
 	}
 
-	RenderScene();
+	
+}
+
+void KeyInput(unsigned char key, int x, int y)
+{
+	//if (key == 'w')
+	//{
+	//	float x, y;
+	//	CSceneMgr::GetInstance()->GetpPlayer()->GetPosition(x, y);
+	//	y += 5.f;
+	//	CSceneMgr::GetInstance()->GetpPlayer()->SetPos(x, y);
+	//	//g_posY += 5.f;
+	//}
+	//else if (key == 's')
+	//{
+	//	float x, y;
+	//	CSceneMgr::GetInstance()->GetpPlayer()->GetPosition(x, y);
+	//	y -= 5.f;
+	//	CSceneMgr::GetInstance()->GetpPlayer()->SetPos(x, y);
+	//	//g_posY -= 5.f;
+	//}
+	//else if (key == 'a')
+	//{
+	//	float x, y;
+	//	CSceneMgr::GetInstance()->GetpPlayer()->GetPosition(x, y);
+	//	x -= 5.f;
+	//	CSceneMgr::GetInstance()->GetpPlayer()->SetPos(x, y);
+	//	//g_posX -= 5.f;
+	//}
+	//else if (key == 'd')
+	//{
+	//	float x, y;
+	//	CSceneMgr::GetInstance()->GetpPlayer()->GetPosition(x, y);
+	//	x += 5.f;
+	//	CSceneMgr::GetInstance()->GetpPlayer()->SetPos(x, y);
+	//	//g_posX += 5.f;
+	//}
+
+	//RenderScene();
 }
 
 void SpecialKeyInput(int key, int x, int y)
@@ -156,7 +261,10 @@ int main(int argc, char **argv)
 
 	glutDisplayFunc(RenderScene);
 	glutIdleFunc(Idle);
-	glutKeyboardFunc(KeyInput);
+	//glutKeyboardFunc(KeyInput);
+	glutKeyboardFunc(KeyDownInput);
+	glutKeyboardUpFunc(KeyUpInput);
+	glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
 	glutMouseFunc(MouseInput);
 	glutSpecialFunc(SpecialKeyInput);
 
