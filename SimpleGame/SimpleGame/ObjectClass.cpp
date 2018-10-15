@@ -12,6 +12,9 @@ CObjectClass::~CObjectClass()
 
 void CObjectClass::Update(const float& eTime)
 {
+	//시간값
+	m_life += eTime;
+
 	//마찰력
 	////speed stop : 잘못된것 같음
 	////Y
@@ -123,6 +126,12 @@ void CObjectClass::Update(const float& eTime)
 
 	//		마찰
 	//     (0.2m/s^2)<-ㅁ----> (1m/s)
+
+	//올라감
+	m_posHeight = m_heightTest + sin(m_life * 1.5f) * 1.f;
+
+	//system("cls");
+	//std::cout << "X : " << m_posX << "  Y : " << m_posY << std::endl;
 }
 
 void CObjectClass::ApplyForce(float x, float y, float eTime)
@@ -187,6 +196,11 @@ void CObjectClass::GetColor(float & r, float & g, float & b, float & a)
 	a = m_a;
 }
 
+void CObjectClass::GetPosHeight(float & height)
+{
+	height = m_posHeight;
+}
+
 void CObjectClass::SetPos(float posX, float posY)
 {
 	m_posX = posX;
@@ -237,4 +251,10 @@ void CObjectClass::SetColor(float r, float g, float b, float a)
 	m_g = g;
 	m_b = b;
 	m_a = a;
+}
+
+void CObjectClass::SetPosHeight(float height)
+{
+	m_posHeight = height;
+	m_heightTest = m_posHeight;
 }

@@ -14,6 +14,17 @@ Renderer::~Renderer()
 {
 }
 
+void Renderer::GetGLPosition(float x, float y, float *newX, float *newY)
+{
+	*newX = x * 2.f / m_WindowSizeX;
+	*newY = y * 2.f / m_WindowSizeY;
+}
+
+void Renderer::GetGLShadow(float x,float *newV)
+{
+	*newV = x / m_WindowSizeY;
+}
+
 void Renderer::Initialize(int windowSizeX, int windowSizeY)
 {
 	//Set window size
@@ -23,7 +34,10 @@ void Renderer::Initialize(int windowSizeX, int windowSizeY)
 	//Load shaders
 	m_SolidRectShader = CompileShaders("./Shaders/SolidRect.vs", "./Shaders/SolidRect.fs");
 	m_TextureRectShader = CompileShaders("./Shaders/TextureRect.vs", "./Shaders/TextureRect.fs");
-	
+
+	//Load shadow texture
+	m_TexShadow = CreatePngTexture("./shadow.png");
+
 	//Create VBOs
 	CreateVertexBufferObjects();
 
@@ -87,7 +101,6 @@ GLuint Renderer::CreatePngTexture(char * filePath)
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, &image[0]);
 
-	//unsigned int형 아이디를 반환
 	return temp;
 }
 
@@ -266,8 +279,52 @@ void Renderer::DrawTextureRect(float x, float y, float z, float sizeX, float siz
 	glDisable(GL_BLEND);
 }
 
-void Renderer::GetGLPosition(float x, float y, float *newX, float *newY)
+void Renderer::DrawTextureRectHeight(float x, float y, float z, float sizeX, float sizeY, float r, float g, float b, float a, GLuint texID, float height)
 {
-	*newX = x * 2.f / m_WindowSizeX;
-	*newY = y * 2.f / m_WindowSizeY;
+	if (height < 0.f)
+		return;
+
+	float newX, newY, shadowY;
+
+	GetGLPosition(x, y, &newX, &newY);
+	GetGLShadow(height, &shadowY);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	//Program select
+	glUseProgram(m_TextureRectShader);
+
+	glUniform4f(glGetUniformLocation(m_TextureRectShader, "u_Trans"), newX, newY, sizeX, sizeY);
+	glUniform4f(glGetUniformLocation(m_TextureRectShader, "u_Color"), 1, 1, 1, a);
+	int texUniform = glGetUniformLocation(m_TextureRectShader, "u_Texture");
+	glUniform1i(texUniform, 0);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_TexShadow);
+
+	int attribPosition = glGetAttribLocation(m_TextureRectShader, "a_Position");
+	int attribTexture = glGetAttribLocation(m_TextureRectShader, "a_TexPos");
+
+	glEnableVertexAttribArray(attribPosition);
+	glEnableVertexAttribArray(attribTexture);
+
+	//Render shadow first
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBOTexRect);
+	glVertexAttribPointer(attribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, 0);
+	glVertexAttribPointer(attribTexture, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (GLvoid*)(3 * sizeof(float)));
+
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	//Render Object
+	glUniform4f(glGetUniformLocation(m_TextureRectShader, "u_Trans"), newX, newY + shadowY, sizeX, sizeY);
+	glUniform4f(glGetUniformLocation(m_TextureRectShader, "u_Color"), r, g, b, a);
+
+	glBindTexture(GL_TEXTURE_2D, texID);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+
+	glDisableVertexAttribArray(attribPosition);
+	glDisableVertexAttribArray(attribTexture);
+
+	glDisable(GL_BLEND);
 }

@@ -33,6 +33,7 @@ public:
 	void GetFrictionCoef(float& x);
 	void GetSize(float& width, float& height);
 	void GetColor(float& r, float& g, float& b, float& a);
+	void GetPosHeight(float& height);
 
 	//Set
 	void SetPos(float posX, float posY);
@@ -44,6 +45,7 @@ public:
 	void SetFrictionCoef(float x);
 	void SetSize(float width, float height);
 	void SetColor(float r, float g, float b, float a);
+	void SetPosHeight(float height);
 	//
 	
 	//position = position + elapsed Time * Velocity
@@ -58,7 +60,8 @@ private:
 	//Pos
 	float m_posX;
 	float m_posY;
-	
+	float m_posHeight;
+
 	//Vel
 	float m_velX;
 	float m_velY;
@@ -70,7 +73,7 @@ private:
 	//Size
 	float m_width;
 	float m_height;
-	
+
 	//Force
 	float m_forceX;
 	float m_forceY;
@@ -86,5 +89,9 @@ private:
 	float m_g;
 	float m_b;
 	float m_a;
+
+	//
+	float m_life = 0.f;
+	float m_heightTest;
 };
 

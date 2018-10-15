@@ -40,11 +40,12 @@ void CSceneMgr::Initialize()
 	m_pPlayer->SetForceX(0.f);
 	m_pPlayer->SetForceY(0.f);
 	m_pPlayer->SetMass(2.5f);
-	m_pPlayer->SetFrictionCoef(0.1f);
-	m_pPlayer->SetSize(1.5f, 1.5f);
+	m_pPlayer->SetFrictionCoef(0.3f);
+	m_pPlayer->SetSize(0.75f, -0.8f);
 	m_pPlayer->SetColor(1.f, 1.f, 1.f, 1.f);
+	m_pPlayer->SetPosHeight(1.5f);
 
-	m_texIssac = m_pRenderer->CreatePngTexture("../Resources/sonic.png");
+	m_texIssac = m_pRenderer->CreatePngTexture("../Resources/issac_norm.png");
 }
 
 void CSceneMgr::RenderScene()
@@ -55,6 +56,7 @@ void CSceneMgr::RenderScene()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//매개변수 RGBA
 	glClearColor(0.f, 0.f, 1.f, 1.f);
+	//glClearColor(1.f, 1.f, 1.f, 1.f);
 
 	
 	//Professor's code
@@ -70,15 +72,19 @@ void CSceneMgr::RenderScene()
 	m_pPlayer->GetSize(width, height);
 	float r, g, b, a;
 	m_pPlayer->GetColor(r, g, b, a);
+	float posHeight;
+	m_pPlayer->GetPosHeight(posHeight);
 
-	float newX, newY, newW, newH;
+	float newX, newY, newPosHeight, newW, newH;
 	newX = x * 100.f;
 	newY = y * 100.f;
+	newPosHeight = posHeight * 100.f;
 	newW = width * 100.f;
 	newH = height * 100.f;
 
 	//m_pRenderer->DrawSolidRect(newX, newY, 0.f, newW, newH, r, g, b, a);
-	m_pRenderer->DrawTextureRect(newX, newY, 0.f, newW, -newH, r, g, b, a, m_texIssac);
+	//m_pRenderer->DrawTextureRect(newX, newY, 0.f, newW, newH, r, g, b, a, m_texIssac);
+	m_pRenderer->DrawTextureRectHeight(newX, newY, 0.f, newW, newH, r, g, b, a, m_texIssac, newPosHeight);
 }
 
 //float temp = 0.f; //for Test
