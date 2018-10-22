@@ -8,5 +8,7 @@
 #include <math.h>
 #include <iostream>
 
+#include "Globals.h"
 #include "Macro.h"
+
 //#include "Struct.h"

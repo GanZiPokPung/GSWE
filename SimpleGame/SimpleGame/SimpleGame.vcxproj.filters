@@ -57,6 +57,9 @@
     <ClInclude Include="LoadPng.h">
       <Filter>99.Defaluts\LoadPng</Filter>
     </ClInclude>
+    <ClInclude Include="ObjectManager.h">
+      <Filter>00.Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SimpleGame.cpp">
@@ -76,6 +79,9 @@
     </ClCompile>
     <ClCompile Include="LoadPng.cpp">
       <Filter>99.Defaluts\LoadPng</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectManager.cpp">
+      <Filter>00.Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

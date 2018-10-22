@@ -10,17 +10,17 @@ INIT_SINGLETON(CSceneMgr)
 float g_Time = 0.f;
 
 CSceneMgr::CSceneMgr()
-	:m_pPlayer(nullptr)
-	, m_pRenderer(nullptr)
+	: m_pRenderer(nullptr)
 {
-	
+	for (auto& iter : m_Objects)
+	{
+		iter = nullptr;
+	}
 }
 
 CSceneMgr::~CSceneMgr()
 {
 	m_pRenderer->DeleteTexture(m_texIssac);
-	delete m_pRenderer;
-	m_pRenderer = nullptr;
 }
 
 void CSceneMgr::Initialize()
@@ -33,17 +33,17 @@ void CSceneMgr::Initialize()
 	}
 
 	//init object
-	m_pPlayer = new CObjectClass();
-	m_pPlayer->SetPos(0.f, 0.f);
-	m_pPlayer->SetVel(0.f, 0.f);
-	m_pPlayer->SetAcc(0.f, 0.f);
-	m_pPlayer->SetForceX(0.f);
-	m_pPlayer->SetForceY(0.f);
-	m_pPlayer->SetMass(2.5f);
-	m_pPlayer->SetFrictionCoef(0.3f);
-	m_pPlayer->SetSize(0.75f, -0.8f);
-	m_pPlayer->SetColor(1.f, 1.f, 1.f, 1.f);
-	m_pPlayer->SetPosHeight(1.5f);
+	m_Objects[OBJ_HERO] = new CObjectClass();
+	m_Objects[OBJ_HERO]->SetPos(0.f, 0.f);
+	m_Objects[OBJ_HERO]->SetVel(0.f, 0.f);
+	m_Objects[OBJ_HERO]->SetAcc(0.f, 0.f);
+	m_Objects[OBJ_HERO]->SetForceX(0.f);
+	m_Objects[OBJ_HERO]->SetForceY(0.f);
+	m_Objects[OBJ_HERO]->SetMass(2.5f);
+	m_Objects[OBJ_HERO]->SetFrictionCoef(0.3f);
+	m_Objects[OBJ_HERO]->SetSize(0.75f, -0.8f);
+	m_Objects[OBJ_HERO]->SetColor(1.f, 1.f, 1.f, 1.f);
+	m_Objects[OBJ_HERO]->SetPosHeight(1.5f);
 
 	m_texIssac = m_pRenderer->CreatePngTexture("../Resources/issac_norm.png");
 }
@@ -67,13 +67,13 @@ void CSceneMgr::RenderScene()
 
 	//Renderer Test
 	float x, y;
-	m_pPlayer->GetPosition(x, y);
+	m_Objects[OBJ_HERO]->GetPosition(x, y);
 	float width, height;
-	m_pPlayer->GetSize(width, height);
+	m_Objects[OBJ_HERO]->GetSize(width, height);
 	float r, g, b, a;
-	m_pPlayer->GetColor(r, g, b, a);
+	m_Objects[OBJ_HERO]->GetColor(r, g, b, a);
 	float posHeight;
-	m_pPlayer->GetPosHeight(posHeight);
+	m_Objects[OBJ_HERO]->GetPosHeight(posHeight);
 
 	float newX, newY, newPosHeight, newW, newH;
 	newX = x * 100.f;
@@ -90,7 +90,7 @@ void CSceneMgr::RenderScene()
 //float temp = 0.f; //for Test
 void CSceneMgr::Update(const float& eTime)
 {
-	m_pPlayer->Update(eTime);
+	m_Objects[OBJ_HERO]->Update(eTime);
 
 	/*m_pPlayer->SetSize(temp, temp);
 	temp += 0.05f;
@@ -108,14 +108,70 @@ void CSceneMgr::Update(const float& eTime)
 
 void CSceneMgr::ApplyForce(float x, float y, float eTime)
 {
-	m_pPlayer->ApplyForce(x, y, eTime);
+	m_Objects[OBJ_HERO]->ApplyForce(x, y, eTime);
 }
 
 
 void CSceneMgr::Free()
 {
-	delete m_pPlayer;
+	Delete_Array(m_Objects);
 	delete m_pRenderer;
-	m_pPlayer = nullptr;
 	m_pRenderer = nullptr;
+}
+
+bool CSceneMgr::AddObject(POSITION pos, VELOCITY speed, OBJSIZE size)
+{
+	//find empty slot
+	int index = FindEmptySlot();
+
+
+	//allocate
+	if (index < 0)
+		return false;
+
+	m_Objects[index] = new CObjectClass;
+	m_Objects[index]->SetPos(pos.x, pos.y);
+	m_Objects[index]->SetVel(speed.velx, speed.vely);
+	m_Objects[index]->SetAcc(0.f, 0.f);
+	m_Objects[index]->SetForceX(0.f);
+	m_Objects[index]->SetForceY(0.f);
+	m_Objects[index]->SetMass(2.5f);
+	m_Objects[index]->SetFrictionCoef(0.3f);
+	m_Objects[index]->SetSize(size.width, size.height);
+	m_Objects[index]->SetColor(1.f, 1.f, 1.f, 1.f);
+	m_Objects[index]->SetPosHeight(1.5f);
+
+
+	return true;
+}
+
+bool CSceneMgr::DeleteObject(ObjType id)
+{
+	if (m_Objects[id])
+	{
+		delete(m_Objects[id]);
+		m_Objects[id] = nullptr;
+	}
+
+	return true;
+}
+
+int CSceneMgr::FindEmptySlot()
+{
+	int index = -1;
+	for (auto& iter : m_Objects)
+	{
+		if (iter == nullptr)
+		{
+			break;
+		}
+		index++;
+	}
+	if (index == -1)
+	{
+		//full
+		std::cout << "all slots are occupied. \n";
+	}
+
+	return index;
 }

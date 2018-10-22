@@ -27,3 +27,6 @@ ClassName* ClassName::m_Instance = nullptr;
 
 #define MSG_BOX(hWnd,ErrorMessage) \
 MessageBox(hWnd, ErrorMessage, L"Error Message", MB_OK)
+
+//template<typename T>
+//inline void DELETE_ALLOC()
