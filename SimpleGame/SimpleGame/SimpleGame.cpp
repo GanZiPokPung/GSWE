@@ -31,6 +31,7 @@ bool g_keyA = false;
 bool g_keyS = false;
 bool g_keyD = false;
 
+ShootType g_shoot = SHOOT_NONE;
 
 void RenderScene(void)
 {
@@ -71,6 +72,8 @@ void RenderScene(void)
 	CSceneMgr::GetInstance()->ApplyForce(fx, fy, eTime);
 	CSceneMgr::GetInstance()->Update(eTime);
 	CSceneMgr::GetInstance()->RenderScene();
+	CSceneMgr::GetInstance()->Shoot(g_shoot);
+	CSceneMgr::GetInstance()->UpdateCollision();
 
 	//std::cout << "Elapsed Time : " << eTime << std::endl;
 
@@ -176,8 +179,44 @@ void KeyUpInput(unsigned char key, int x, int y)
 		CSceneMgr::GetInstance()->GetpPlayer()->SetForceX(-7.5f);
 		//std::cout << "D FALSE!!" << std::endl;
 	}
+}
 
-	
+void SpecialKeyDownInput(int key, int x, int y)
+{
+	switch (key)
+	{
+	case GLUT_KEY_UP:
+		g_shoot = SHOOT_UP;
+		break;
+	case GLUT_KEY_DOWN:
+		g_shoot = SHOOT_DOWN;
+		break;
+	case GLUT_KEY_RIGHT:
+		g_shoot = SHOOT_RIGHT;
+		break;
+	case GLUT_KEY_LEFT:
+		g_shoot = SHOOT_LEFT;
+		break;
+	}
+}
+
+void SpecialKeyUpInput(int key, int x, int y)
+{
+	switch (key)
+	{
+	case GLUT_KEY_UP:
+		g_shoot = SHOOT_NONE;
+		break;
+	case GLUT_KEY_DOWN:
+		g_shoot = SHOOT_NONE;
+		break;
+	case GLUT_KEY_RIGHT:
+		g_shoot = SHOOT_NONE;
+		break;
+	case GLUT_KEY_LEFT:
+		g_shoot = SHOOT_NONE;
+		break;
+	}
 }
 
 void KeyInput(unsigned char key, int x, int y)
@@ -267,6 +306,8 @@ int main(int argc, char **argv)
 	glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
 	glutMouseFunc(MouseInput);
 	glutSpecialFunc(SpecialKeyInput);
+	glutSpecialFunc(SpecialKeyDownInput);
+	glutSpecialUpFunc(SpecialKeyUpInput);
 
 	glutMainLoop();
 

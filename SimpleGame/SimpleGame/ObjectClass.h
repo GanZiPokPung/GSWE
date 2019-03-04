@@ -34,6 +34,7 @@ public:
 	void GetSize(float& width, float& height);
 	void GetColor(float& r, float& g, float& b, float& a);
 	void GetPosHeight(float& height);
+	void GetKey(int& kind);
 
 	//Set
 	void SetPos(float posX, float posY);
@@ -46,6 +47,7 @@ public:
 	void SetSize(float width, float height);
 	void SetColor(float r, float g, float b, float a);
 	void SetPosHeight(float height);
+	void SetKey(int kind);
 	//
 	
 	//position = position + elapsed Time * Velocity
@@ -93,5 +95,7 @@ private:
 	//
 	float m_life = 0.f;
 	float m_heightTest;
+
+	int m_kind;
 };
 

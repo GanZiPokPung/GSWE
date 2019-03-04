@@ -2,12 +2,27 @@
 
 enum LengthType
 {
-	MAX_OBJECT = 300
+	MAX_OBJECT = 3000
 };
 
 enum ObjType
 {
 	OBJ_HERO
+};
+
+enum KindType
+{
+	KIND_HERO,
+	KIND_BULLET
+};
+
+enum ShootType
+{
+	SHOOT_NONE,
+	SHOOT_UP,
+	SHOOT_DOWN,
+	SHOOT_LEFT,
+	SHOOT_RIGHT
 };
 
 template<typename T>

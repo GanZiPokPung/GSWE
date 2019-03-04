@@ -201,6 +201,11 @@ void CObjectClass::GetPosHeight(float & height)
 	height = m_posHeight;
 }
 
+void CObjectClass::GetKey(int & kind)
+{
+	kind = m_kind;
+}
+
 void CObjectClass::SetPos(float posX, float posY)
 {
 	m_posX = posX;
@@ -257,4 +262,9 @@ void CObjectClass::SetPosHeight(float height)
 {
 	m_posHeight = height;
 	m_heightTest = m_posHeight;
+}
+
+void CObjectClass::SetKey(int kind)
+{
+	m_kind = kind;
 }
